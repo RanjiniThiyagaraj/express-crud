@@ -4,7 +4,8 @@ const bodyParser = require("body-parser");
 const app = express();
 const mongoose = require("./config/database");
 const userRoutes = require("./routes/user");
-
+const productRoutes = require("./routes/product");
+const jwt = require("./utils/jwt");
 app.set("secretKey", "express-crud");
 
 app.use(logger("dev"));
@@ -23,6 +24,7 @@ app.get("/healthcheck", (req, res) => {
 });
 
 app.use("/users", userRoutes);
+app.use("/product", productRoutes);
 
 app.listen(3000, () => {
   console.log("Server is running on 3000 port!!!");
