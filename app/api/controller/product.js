@@ -40,7 +40,7 @@ const productController = {
   },
   getById: (req, res, next) => {
     const id = req.params.id;
-    productModel.findOne({ id }, (err, product) => {
+      productModel.findById( req.params.id, (err, prod) => {
       if (err) {
         next(err);
       } else {
@@ -48,14 +48,44 @@ const productController = {
           status: "success",
           message: "product found",
           data: {
-            product: product,
+            product: prod,
           },
         });
       }
     });
   },
-  deleteById: (req, res, next) => {},
-  updateById: (req, res, next) => {},
+  deleteById: (req, res, next) => {
+    const id=req.params.id;
+    console.log(id);
+    productModel.findByIdAndRemove(req.params.id,(err,product)=>{
+      if(err){
+        next(err);
+      }else{
+        res.json({
+          status:"succuessfully deleted",
+          "message":"product deleted",
+          "data":product
+        });
+      }
+      });
+    },
+
+
+updateById: (req, res, next) => {
+  productModel.findByIdAndUpdate(req.params.id,req.body,(err,product)=>{
+    if(err){
+      next(err);
+    }else{
+      res.json({
+        status:"success",
+        message:"successfully updated product",
+        data:req.body
+      })
+    }
+  })
+},
+
+
 };
 
 module.exports = productController;
